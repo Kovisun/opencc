@@ -1,0 +1,20 @@
+{
+  "skipWebFetchPreflight": true,
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://10.2.2.10:8080",
+    "ANTHROPIC_API_KEY": "No",
+    "ANTHROPIC_MODEL": "Qwen3.6",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "Qwen3.6",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "Qwen3.6",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "Qwen3.6",
+    "CLAUDE_CODE_MODEL_CONTEXT_WINDOWS": "{\"Qwen3.6\":262144}"
+  },
+  "model": "deepseek-v4-flash",
+  "h5Access": {
+    "enabled": true,
+    "tokenHash": "f5d56c179f781aab9c158c5f3125e4088711c297ebfe6ba5b1b48a0ff56c7400",
+    "tokenPreview": "1562...7868",
+    "allowedOrigins": [],
+    "publicBaseUrl": null
+  }
+}

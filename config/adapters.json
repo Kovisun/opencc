@@ -1,0 +1,41 @@
+{
+  "pairing": {
+    "code": null,
+    "expiresAt": null,
+    "createdAt": null
+  },
+  "wechat": {
+    "baseUrl": "https://ilinkai.weixin.qq.com",
+    "pairedUsers": [
+      {
+        "userId": "o9cq8073zyM17-gtS22HDQ7F55sg@im.wechat",
+        "displayName": "WeChat User",
+        "pairedAt": 1778936594544
+      }
+    ],
+    "allowedUsers": [],
+    "accountId": "51f261c63779@im.bot",
+    "botToken": "51f261c63779@im.bot:060000d49a45e3df658e816a3df5e1777036c2",
+    "userId": "o9cq8073zyM17-gtS22HDQ7F55sg@im.wechat"
+  },
+  "telegram": {
+    "allowedUsers": []
+  },
+  "feishu": {
+    "appId": "cli_aa8c9ec564b8dcc8",
+    "appSecret": "1heQBRy8QObOB12vEK9gSc1VmFhh7arh",
+    "allowedUsers": [],
+    "streamingCard": true,
+    "pairedUsers": [
+      {
+        "userId": "ou_841f64a640d1908574e9705af2ed19da",
+        "displayName": "Feishu User",
+        "pairedAt": 1778936375727
+      }
+    ]
+  },
+  "dingtalk": {
+    "allowedUsers": []
+  },
+  "defaultProjectDir": "/app/adapters"
+}
