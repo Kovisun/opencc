@@ -13,26 +13,20 @@ RUN cd desktop && bun install --frozen-lockfile
 
 COPY . .
 RUN cd adapters && bun install --frozen-lockfile && cd ..
+RUN bun add color-diff-napi
 RUN cd desktop && bun run build
 
-# 瘦身：删除运行时不需要的目录和 dev 依赖
-RUN rm -rf \
-  desktop/src \
-  desktop/node_modules \
-  desktop/public \
-  desktop/scripts \
-  docs \
-  fixtures \
-  release-notes \
-  scripts \
-  stubs \
-  tests \
-  AGENTS.md CC.md CONTRIBUTING.md LICENSE \
-  README.md README.en.md .env.example \
-  .github .gitignore && \
-  # 清除 bun 缓存
-  rm -rf /root/.bun/install/cache && \
-  rm -rf .git
+RUN find src -type f \( -name "*.test.ts" -o -name "*.spec.ts" \) -delete && \
+    find src -type d -name "__tests__" -exec rm -rf {} + 2>/dev/null; \
+    rm -rf src/screens src/main.tsx src/replLauncher.tsx src/localRecoveryCli.ts && \
+    rm -rf \
+    docs fixtures release-notes scripts tests \
+    AGENTS.md CC.md CONTRIBUTING.md LICENSE \
+    README.md README.en.md .env.example \
+    .github .gitignore \
+    desktop/src desktop/public desktop/scripts \
+    desktop/node_modules \
+    /root/.bun/install/cache .git
 
 # ============================================================
 FROM oven/bun:alpine
@@ -41,7 +35,37 @@ WORKDIR /app
 
 RUN apk add --no-cache bash
 
-COPY --from=builder /app /app
+# 安装生产依赖 + 删除不必要的大包（同一层，避免 docker 分层保留被删文件）
+COPY package.json bun.lock bunfig.toml tsconfig.json ./
+RUN bun install --production --frozen-lockfile && \
+    rm -rf \
+      node_modules/@aws-sdk \
+      node_modules/@smithy \
+      node_modules/@algolia \
+      node_modules/@shikijs \
+      node_modules/highlight.js \
+      node_modules/@mixmark-io \
+      node_modules/web-streams-polyfill \
+      node_modules/es-toolkit \
+      node_modules/cytoscape-fcose \
+      node_modules/@vue \
+      node_modules/@types \
+      node_modules/hono
+
+# 复制运行时需要的文件和目录
+COPY --from=builder /app/src /app/src
+COPY --from=builder /app/stubs /app/stubs
+COPY --from=builder /app/config /app/config
+COPY --from=builder /app/runtime /app/runtime
+COPY --from=builder /app/bin /app/bin
+COPY --from=builder /app/preload.ts /app/
+COPY --from=builder /app/desktop/dist /app/desktop/dist
+
+COPY --from=builder /app/adapters /app/adapters
+RUN cd adapters && rm -rf node_modules && bun install --production && \
+    rm -rf node_modules/@types
+
+RUN chmod +x /app/bin/claude-haha
 
 RUN chmod +x /app/bin/claude-haha
 
