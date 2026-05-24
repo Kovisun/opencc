@@ -16,10 +16,7 @@ RUN cd adapters && bun install --frozen-lockfile && cd ..
 RUN bun add color-diff-napi
 RUN cd desktop && bun run build
 
-RUN find src -type f \( -name "*.test.ts" -o -name "*.spec.ts" \) -delete && \
-    find src -type d -name "__tests__" -exec rm -rf {} + 2>/dev/null; \
-    rm -rf src/screens src/replLauncher.tsx src/localRecoveryCli.ts && \
-    rm -rf \
+RUN rm -rf \
     docs fixtures release-notes scripts tests \
     AGENTS.md CC.md CONTRIBUTING.md LICENSE \
     README.md README.en.md .env.example \
