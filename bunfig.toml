@@ -1,1 +1,4 @@
 preload = ["./preload.ts"]
+
+[paths]
+"color-diff-napi" = "./stubs/color-diff-napi.ts"
