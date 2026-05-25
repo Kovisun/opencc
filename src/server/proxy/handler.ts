@@ -110,6 +110,11 @@ async function handleOpenaiChat(
   isStream: boolean,
 ): Promise<Response> {
   const transformed = anthropicToOpenaiChat(body)
+  // DeepSeek V4 默认开启 thinking 模式，但客户端无法正确处理 reasoning_content 回传。
+  // 注入 thinking:disabled 来关闭深度思考，避免多轮对话 400 错误。
+  if (body.model?.includes('deepseek')) {
+    ;(transformed as Record<string, unknown>).thinking = { type: 'disabled' }
+  }
   const url = `${baseUrl}/v1/chat/completions`
 
   const upstream = await fetch(url, {
