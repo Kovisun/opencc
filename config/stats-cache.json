@@ -1,0 +1,46 @@
+{
+  "version": 5,
+  "lastComputedDate": "2026-05-16",
+  "dailyActivity": [
+    {
+      "date": "2026-05-16",
+      "messageCount": 20,
+      "sessionCount": 2,
+      "toolCallCount": 2
+    }
+  ],
+  "dailyModelTokens": [
+    {
+      "date": "2026-05-16",
+      "tokensByModel": {
+        "deepseek-v4-flash": 181224
+      }
+    }
+  ],
+  "modelUsage": {
+    "deepseek-v4-flash": {
+      "inputTokens": 61209,
+      "outputTokens": 463,
+      "cacheReadInputTokens": 119552,
+      "cacheCreationInputTokens": 0,
+      "webSearchRequests": 0,
+      "costUSD": 0,
+      "contextWindow": 0,
+      "maxOutputTokens": 0
+    }
+  },
+  "totalSessions": 2,
+  "totalMessages": 20,
+  "longestSession": {
+    "sessionId": "c8a1c73e-cabd-41b7-8652-f1522212aabe",
+    "duration": 16520935,
+    "messageCount": 4,
+    "timestamp": "2026-05-16T13:03:37.821Z"
+  },
+  "firstSessionDate": "2026-05-16T12:59:44.987Z",
+  "hourCounts": {
+    "20": 1,
+    "21": 1
+  },
+  "totalSpeculationTimeSavedMs": 0
+}

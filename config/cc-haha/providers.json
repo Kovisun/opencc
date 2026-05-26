@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "activeId": "3843f128-e1ef-4b17-b2de-eaf998c82464",
+  "providers": [
+    {
+      "id": "3843f128-e1ef-4b17-b2de-eaf998c82464",
+      "presetId": "deepseek",
+      "name": "DeepSeek",
+      "apiKey": "sk-c5596e057a194feb957fcbf16ff26ac1",
+      "authStrategy": "api_key",
+      "baseUrl": "https://api.deepseek.com/anthropic",
+      "apiFormat": "anthropic",
+      "models": {
+        "main": "deepseek-v4-flash",
+        "haiku": "deepseek-v4-flash",
+        "sonnet": "deepseek-v4-pro",
+        "opus": "deepseek-v4-pro"
+      },
+      "modelContextWindows": {
+        "deepseek-v4-flash": 1000000,
+        "deepseek-v4-pro": 1000000
+      }
+    },
+    {
+      "id": "b1f3a3a0-a44b-43a0-9fc8-c4c8554e41c3",
+      "presetId": "ollama",
+      "name": "Ollama",
+      "apiKey": "No",
+      "authStrategy": "api_key",
+      "baseUrl": "http://10.2.2.10:8080",
+      "apiFormat": "anthropic",
+      "models": {
+        "main": "Qwen3.6",
+        "haiku": "Qwen3.6",
+        "sonnet": "Qwen3.6",
+        "opus": "Qwen3.6"
+      },
+      "modelContextWindows": {
+        "Qwen3.6": 262144
+      }
+    }
+  ]
+}
