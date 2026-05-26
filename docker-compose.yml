@@ -1,0 +1,47 @@
+# ============================================================
+# OpenCC — cc-haha Linux Backend Docker Compose
+# 单容器模式：Server + 微信 + 飞书 全部合并启动
+# ============================================================
+# 使用方式:
+#   1. docker compose build          # 构建镜像
+#   2. docker compose up -d          # 启动（默认 all 模式）
+#   3. docker compose logs -f        # 查看日志
+#
+# H5 远程访问: http://<主机IP>:3456
+# IM 配置: 启动后通过 H5 页面 Settings → IM 接入 配置
+# ============================================================
+
+services:
+  claudecode:
+    image: ghcr.io/kovisun/opencc:latest
+    container_name: ClaudeCode
+    network_mode: bridge
+    ports:
+      - "3456:3456"
+    volumes:
+      # 配置目录（覆盖镜像内默认配置）
+      - ./config:/root/.claude
+      # 数据目录（会话、缓存等）
+      - ./data:/root/.local/share/claude
+      # 工作区（代码项目挂载点）
+      - ./workspace:/workspace
+      # .env 配置（可选）
+      - ./.env:/app/.env:ro
+    environment:
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=3456
+      - CLAUDE_APP_ROOT=/app
+      - CLAUDE_H5_DIST_DIR=/app/desktop/dist
+      - DISABLE_TELEMETRY=1
+      - CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+      - IS_SANDBOX=1
+      - TZ=Asia/Shanghai
+    healthcheck:
+      test: ["CMD", "bun", "run", "-e", "fetch('http://localhost:3456/api/status').then(r => process.exit(r.ok?0:1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    stdin_open: true
+    tty: true
+    restart: always
