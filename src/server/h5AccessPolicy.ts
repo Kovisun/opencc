@@ -22,12 +22,35 @@ export function isLoopbackHost(hostname: string): boolean {
   return LOCAL_HOSTS.has(normalized)
 }
 
+export function isTrustedHost(hostname: string): boolean {
+  const normalized = normalizeHostname(hostname)
+  if (normalized.startsWith('::ffff:')) {
+    return isTrustedHost(normalized.slice('::ffff:'.length))
+  }
+
+  if (LOCAL_HOSTS.has(normalized)) return true
+
+  const parts = normalized.split('.')
+  if (parts.length !== 4 || !parts.every((part) => /^\d+$/.test(part))) {
+    return false
+  }
+  const [a, b] = parts.map((part) => Number(part))
+
+  if (a === 10) return true
+  if (a === 172 && b >= 16 && b <= 31) return true
+  if (a === 192 && b === 168) return true
+  if (a === 169 && b === 254) return true
+  if (a === 127) return true
+
+  return false
+}
+
 function isLocalOrigin(origin: string | null): boolean {
   if (!origin) return true
   if (LOCAL_ORIGINS.has(origin)) return true
 
   try {
-    return isLoopbackHost(new URL(origin).hostname)
+    return isTrustedHost(new URL(origin).hostname)
   } catch {
     return false
   }
@@ -39,7 +62,7 @@ export function classifyH5Request(
   context: H5RequestContext,
 ): H5RequestKind {
   const localTrusted = Boolean(context.clientAddress) &&
-    isLoopbackHost(context.clientAddress!) &&
+    isTrustedHost(context.clientAddress!) &&
     isLocalOrigin(request.headers.get('Origin'))
 
   if (url.pathname.startsWith('/sdk/') && localTrusted) {

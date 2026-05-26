@@ -80,6 +80,10 @@ set -euo pipefail
 if [ -d /root/.claude ] && [ -z "$(ls -A /root/.claude 2>/dev/null)" ]; then
   cp -r /app/.claude-defaults/* /root/.claude/
 fi
+mkdir -p /root/.claude/skills
+for d in /root/.claude/projects/*/; do
+  mkdir -p "$d/memory"
+done
 MODE="${MODE:-all}"
 case "$MODE" in
   server) exec bun run src/server/index.ts --host 0.0.0.0 --port "${SERVER_PORT:-3456}" ;;

@@ -288,10 +288,30 @@ export function isLoopbackHostname(hostname: string) {
   return normalized === '127.0.0.1' || normalized === 'localhost' || normalized === '::1'
 }
 
+export function isPrivateHostname(hostname: string) {
+  const normalized = hostname.trim().replace(/^\[/, '').replace(/\]$/, '').toLowerCase()
+
+  if (isLoopbackHostname(normalized)) return true
+
+  const parts = normalized.split('.')
+  if (parts.length !== 4 || !parts.every((part) => /^\d+$/.test(part))) {
+    return false
+  }
+  const [a = -1, b = -1] = parts.map((part) => Number(part))
+
+  if (a === 10) return true
+  if (a === 172 && b >= 16 && b <= 31) return true
+  if (a === 192 && b === 168) return true
+  if (a === 169 && b === 254) return true
+  if (a === 127) return true
+
+  return false
+}
+
 export function requiresH5AuthForServerUrl(serverUrl: string, browserHostname = getBrowserHostname()) {
   void browserHostname
   try {
-    return !isLoopbackHostname(new URL(serverUrl).hostname)
+    return !isPrivateHostname(new URL(serverUrl).hostname)
   } catch {
     return false
   }

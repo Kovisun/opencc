@@ -2,7 +2,7 @@
  * CORS middleware for desktop and temporary open H5 access.
  */
 
-import { isLoopbackHost } from '../h5AccessPolicy.js'
+import { isTrustedHost } from '../h5AccessPolicy.js'
 
 export function corsHeaders(origin?: string | null): Record<string, string> {
   const allowedOrigin = origin || 'http://localhost:3000'
@@ -51,7 +51,7 @@ function isLocalOrigin(origin?: string | null): boolean {
   }
 
   try {
-    return isLoopbackHost(new URL(origin).hostname)
+    return isTrustedHost(new URL(origin).hostname)
   } catch {
     return false
   }
